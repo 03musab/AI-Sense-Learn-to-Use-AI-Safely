@@ -1,0 +1,1579 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Sense — Learn to Use AI Safely</title>
+    <meta name="description"
+        content="A friendly, practical learning hub to help students, developers, and everyday AI users understand privacy, data leaks, deepfakes, and safer AI habits.">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23FF5A3C'/%3E%3Cpath d='M32 10l5.2 16.8L54 32l-16.8 5.2L32 54l-5.2-16.8L10 32l16.8-5.2z' fill='%23FFF8F0'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Figtree:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
+    <script>document.documentElement.classList.add('js')</script>
+    <style>
+        :root {
+            --bg: #FFF8F0;
+            --bg-soft: #FFEFDC;
+            --card: #FFFCF7;
+            --ink: #2E1F14;
+            --ink-soft: #6E5B4A;
+            --line: #F0E0CC;
+            --coral: #FF5A3C;
+            --coral-deep: #E84527;
+            --sun: #FFB627;
+            --peach: #FFE3CF;
+            --sage: #DCECDF;
+            --sage-ink: #2F5D46;
+            --shadow: 0 18px 44px rgba(46, 31, 20, .09);
+            --shadow-lg: 0 30px 70px rgba(46, 31, 20, .14);
+            --ease: cubic-bezier(.22, 1, .36, 1);
+            --r-lg: 28px;
+            --r-xl: 36px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        html,
+        body {
+            overflow-x: clip
+        }
+
+        body {
+            font-family: "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        body.locked {
+            overflow: hidden
+        }
+
+        ::selection {
+            background: var(--sun);
+            color: var(--ink)
+        }
+
+        button,
+        a {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer;
+            border: 0;
+            background: none;
+            color: inherit
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        img,
+        svg {
+            display: block
+        }
+
+        section {
+            scroll-margin-top: 90px
+        }
+
+        /* grain + ambient warmth */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: .5;
+            background:
+                radial-gradient(720px 420px at 8% -4%, rgba(255, 182, 39, .16), transparent 62%),
+                radial-gradient(640px 420px at 96% 6%, rgba(255, 90, 60, .12), transparent 60%),
+                radial-gradient(900px 620px at 50% 118%, rgba(255, 227, 207, .5), transparent 65%);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            opacity: .05;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .app {
+            position: relative;
+            z-index: 3
+        }
+
+        /* layout */
+        .wrap {
+            max-width: 1080px;
+            margin: auto;
+            padding: 0 28px
+        }
+
+        .section {
+            padding: 64px 0 20px
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 20px;
+            margin-bottom: 32px
+        }
+
+        .section-head h2 {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 640;
+            font-size: clamp(28px, 3.6vw, 44px);
+            letter-spacing: -.02em;
+            line-height: 1.08;
+            margin-top: 14px
+        }
+
+        .section-head .muted {
+            padding-bottom: 8px
+        }
+
+        .muted {
+            color: var(--ink-soft)
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            color: var(--coral-deep);
+        }
+
+        .eyebrow .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--coral);
+            box-shadow: 0 0 0 4px rgba(255, 90, 60, .18)
+        }
+
+        /* buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            border-radius: 999px;
+            padding: 15px 27px;
+            font-weight: 750;
+            font-size: 15.5px;
+            line-height: 1;
+            transition: transform .3s var(--ease), box-shadow .3s var(--ease), background .25s, border-color .25s;
+            will-change: transform;
+        }
+
+        .btn svg {
+            width: 17px;
+            height: 17px;
+            transition: transform .3s var(--ease)
+        }
+
+        .btn:hover svg {
+            transform: translateX(3px)
+        }
+
+        .btn-primary {
+            background: var(--coral);
+            color: #fff;
+            box-shadow: 0 12px 26px rgba(255, 90, 60, .34)
+        }
+
+        .btn-primary:hover {
+            background: var(--coral-deep);
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(255, 90, 60, .4)
+        }
+
+        .btn-primary:active {
+            transform: translateY(0) scale(.98)
+        }
+
+        .btn-ghost {
+            border: 1.5px solid rgba(46, 31, 20, .18);
+            color: var(--ink);
+            background: transparent
+        }
+
+        .btn-ghost:hover {
+            background: #fff;
+            border-color: rgba(46, 31, 20, .34);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow)
+        }
+
+        .btn-ghost:active {
+            transform: translateY(0) scale(.98)
+        }
+
+        .btn:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none
+        }
+
+        .btn.small {
+            padding: 11px 20px;
+            font-size: 14px
+        }
+
+        /* topbar */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 248, 240, .82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(240, 224, 204, .9);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 14px 0
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 700;
+            font-size: 21px;
+            letter-spacing: -.01em
+        }
+
+        .brand .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: var(--coral);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 8px 18px rgba(255, 90, 60, .35);
+            transition: transform .35s var(--ease);
+        }
+
+        .brand:hover .logo {
+            transform: rotate(-8deg) scale(1.06)
+        }
+
+        .brand .logo svg {
+            width: 20px;
+            height: 20px
+        }
+
+        .navlinks {
+            display: flex;
+            align-items: center;
+            gap: 28px
+        }
+
+        .navlinks a {
+            font-size: 14.5px;
+            font-weight: 650;
+            color: var(--ink-soft);
+            position: relative;
+            padding: 4px 0;
+            transition: color .2s
+        }
+
+        .navlinks a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--coral);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .3s var(--ease)
+        }
+
+        .navlinks a:hover,
+        .navlinks a.active {
+            color: var(--ink)
+        }
+
+        .navlinks a:hover::after,
+        .navlinks a.active::after {
+            transform: scaleX(1)
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .burger {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(46, 31, 20, .16);
+            place-items: center
+        }
+
+        .burger svg {
+            width: 20px;
+            height: 20px
+        }
+
+        .mobilemenu {
+            display: none;
+            position: fixed;
+            top: 67px;
+            left: 0;
+            right: 0;
+            z-index: 49;
+            padding: 12px 22px 24px;
+            background: rgba(255, 248, 240, .97);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .mobilemenu.open {
+            display: block;
+            animation: menuIn .35s var(--ease)
+        }
+
+        @keyframes menuIn {
+            from {
+                opacity: 0;
+                transform: translateY(-12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .mobilemenu a,
+        .mobilemenu button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 15px 6px;
+            font-weight: 700;
+            font-size: 17px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .mobilemenu .btn {
+            margin-top: 16px;
+            display: inline-flex;
+            justify-content: center;
+            width: 100%;
+            border-bottom: 0
+        }
+
+        /* hero (compact) */
+        .hero {
+            padding: 64px 0 24px;
+            display: grid;
+            grid-template-columns: 1.12fr .88fr;
+            gap: 48px;
+            align-items: center
+        }
+
+        .hero h1 {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 680;
+            font-size: clamp(40px, 5.2vw, 68px);
+            line-height: 1.03;
+            letter-spacing: -.028em;
+            margin: 18px 0 20px;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--coral)
+        }
+
+        .line {
+            display: block;
+            overflow: hidden;
+            padding-bottom: .08em;
+            margin-bottom: -.08em
+        }
+
+        html.js .line>span {
+            display: block;
+            transform: translateY(115%);
+            animation: riseUp 1.05s var(--ease) forwards
+        }
+
+        html.js .l1>span {
+            animation-delay: .08s
+        }
+
+        html.js .l2>span {
+            animation-delay: .2s
+        }
+
+        @keyframes riseUp {
+            to {
+                transform: translateY(0)
+            }
+        }
+
+        html.js .fadeup {
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp .9s var(--ease) forwards
+        }
+
+        html.js .d1 {
+            animation-delay: .42s
+        }
+
+        html.js .d2 {
+            animation-delay: .54s
+        }
+
+        html.js .d3 {
+            animation-delay: .66s
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .hero .eyebrow {
+            color: var(--ink-soft)
+        }
+
+        .hero .eyebrow .dot {
+            animation: pulse 2.4s ease infinite
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 90, 60, .35)
+            }
+
+            50% {
+                box-shadow: 0 0 0 7px rgba(255, 90, 60, 0)
+            }
+        }
+
+        .hero p.lead {
+            font-size: 17px;
+            max-width: 540px;
+            color: var(--ink-soft)
+        }
+
+        .actions {
+            display: flex;
+            gap: 13px;
+            flex-wrap: wrap;
+            margin-top: 26px
+        }
+
+        .hero .note {
+            font-size: 13.5px;
+            margin-top: 20px;
+            color: var(--ink-soft);
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .hero .note svg {
+            width: 15px;
+            height: 15px;
+            color: var(--sage-ink)
+        }
+
+        /* hero art */
+        .hero-art {
+            position: relative
+        }
+
+        .art-card {
+            position: relative;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--r-xl);
+            padding: 26px;
+            box-shadow: var(--shadow-lg);
+            transform: rotate(2deg);
+            will-change: transform;
+        }
+
+        .art-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            color: var(--ink-soft)
+        }
+
+        .shieldbox {
+            width: 116px;
+            height: 116px;
+            margin: 26px auto;
+            border-radius: 32px;
+            background: var(--peach);
+            display: grid;
+            place-items: center;
+            color: var(--coral);
+            animation: bob 5.2s ease-in-out infinite;
+        }
+
+        .shieldbox svg {
+            width: 56px;
+            height: 56px
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg)
+            }
+
+            50% {
+                transform: translateY(-9px) rotate(2deg)
+            }
+        }
+
+        .art-bottom {
+            border-radius: 18px;
+            background: #fff;
+            padding: 15px 17px;
+            border: 1px solid var(--line)
+        }
+
+        .art-bottom strong {
+            font-family: "Fraunces", Georgia, serif;
+            font-size: 17.5px;
+            font-weight: 640;
+            display: block
+        }
+
+        .art-bottom small {
+            color: var(--ink-soft);
+            font-size: 13px
+        }
+
+        .sticker {
+            position: absolute;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 15px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 800;
+            box-shadow: var(--shadow);
+            white-space: nowrap;
+            z-index: 4;
+        }
+
+        .sticker svg {
+            width: 13px;
+            height: 13px
+        }
+
+        .st-sun {
+            background: var(--sun);
+            color: #3A2A12;
+            transform: rotate(-7deg)
+        }
+
+        .st-sage {
+            background: var(--sage);
+            color: var(--sage-ink);
+            transform: rotate(5deg)
+        }
+
+        .st-1 {
+            top: -16px;
+            left: -18px;
+            animation: bob 6s ease-in-out infinite
+        }
+
+        .st-2 {
+            bottom: 78px;
+            right: -16px;
+            animation: bob 7s ease-in-out .8s infinite
+        }
+
+        /* quiz box */
+        .quizbox {
+            border: 1px solid var(--line);
+            background: var(--card);
+            border-radius: var(--r-xl);
+            padding: 34px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quizbox::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral), var(--sun))
+        }
+
+        .quizbox h3 {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 640;
+            font-size: clamp(20px, 2.4vw, 26px);
+            letter-spacing: -.015em;
+            line-height: 1.25;
+            margin: 6px 0 6px
+        }
+
+        .qtop {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 14px
+        }
+
+        .qtop strong {
+            font-size: 14.5px
+        }
+
+        .scorechip {
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--bg-soft);
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--ink-soft)
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 20px;
+            background: var(--bg-soft);
+            overflow: hidden;
+            margin: 14px 0 24px
+        }
+
+        .progress span {
+            height: 100%;
+            display: block;
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--coral), var(--sun));
+            width: 0;
+            transition: width .5s var(--ease)
+        }
+
+        .answers {
+            display: grid;
+            gap: 12px;
+            margin: 20px 0
+        }
+
+        .answer {
+            padding: 16px 18px;
+            border: 1.5px solid var(--line);
+            border-radius: 18px;
+            text-align: left;
+            background: #fff;
+            font-weight: 600;
+            font-size: 15.5px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            transition: border-color .25s, background .25s, transform .25s var(--ease), box-shadow .25s;
+        }
+
+        .answer .key {
+            width: 30px;
+            height: 30px;
+            flex: none;
+            border-radius: 10px;
+            background: var(--bg-soft);
+            display: grid;
+            place-items: center;
+            font-size: 13px;
+            font-weight: 850;
+            color: var(--ink-soft);
+            transition: background .25s, color .25s;
+        }
+
+        .answer:hover:not(:disabled) {
+            border-color: var(--coral);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow)
+        }
+
+        .answer:hover:not(:disabled) .key {
+            background: var(--coral);
+            color: #fff
+        }
+
+        .answer.selected {
+            border-color: var(--coral);
+            background: var(--peach)
+        }
+
+        .answer.correct {
+            border-color: #2F8F5B;
+            background: #EAF7EF
+        }
+
+        .answer.correct .key {
+            background: #2F8F5B;
+            color: #fff
+        }
+
+        .answer.wrong {
+            border-color: #D6452C;
+            background: #FDECE7
+        }
+
+        .answer.wrong .key {
+            background: #D6452C;
+            color: #fff
+        }
+
+        .answer:disabled {
+            cursor: default;
+            opacity: .82
+        }
+
+        .feedback {
+            min-height: 28px;
+            font-weight: 700;
+            font-size: 14.5px;
+            color: var(--sage-ink);
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .feedback.bad {
+            color: #C2402A
+        }
+
+        .quizfoot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px
+        }
+
+        .result-big {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 680;
+            font-size: clamp(28px, 4vw, 42px);
+            letter-spacing: -.02em;
+            margin: 8px 0
+        }
+
+        /* lesson cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px
+        }
+
+        .lesson {
+            border: 1px solid var(--line);
+            border-radius: var(--r-lg);
+            padding: 28px;
+            background: var(--card);
+            display: flex;
+            flex-direction: column;
+            min-height: 220px;
+            transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .3s;
+        }
+
+        .lesson:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(255, 90, 60, .35)
+        }
+
+        .lesson-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start
+        }
+
+        .iconbox {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center
+        }
+
+        .iconbox svg {
+            width: 23px;
+            height: 23px
+        }
+
+        .ib-coral {
+            background: var(--peach);
+            color: var(--coral-deep)
+        }
+
+        .ib-sun {
+            background: #FFEBBF;
+            color: #8A5A00
+        }
+
+        .lesson .num {
+            font-size: 12px;
+            font-weight: 850;
+            letter-spacing: .14em;
+            color: var(--coral-deep);
+            margin-top: 18px
+        }
+
+        .lesson h3 {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 640;
+            font-size: 21.5px;
+            letter-spacing: -.01em;
+            margin: 9px 0 8px
+        }
+
+        .lesson p {
+            color: var(--ink-soft);
+            font-size: 14.5px;
+            margin-bottom: 22px
+        }
+
+        .lesson .btn {
+            margin-top: auto;
+            align-self: flex-start
+        }
+
+        /* footer */
+        .footer {
+            background: var(--ink);
+            color: #F5EADD;
+            margin-top: 64px;
+            padding: 32px 0;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+            z-index: 3
+        }
+
+        .footer .flogo {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 680;
+            font-size: 17px;
+            margin-bottom: 8px
+        }
+
+        .footer .flogo .logo {
+            width: 28px;
+            height: 28px;
+            border-radius: 9px;
+            background: var(--coral);
+            display: grid;
+            place-items: center
+        }
+
+        .footer .flogo .logo svg {
+            width: 15px;
+            height: 15px
+        }
+
+        .footer p {
+            color: rgba(245, 234, 221, .72)
+        }
+
+        /* modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .32s var(--ease);
+        }
+
+        .modal::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(46, 31, 20, .45);
+            backdrop-filter: blur(9px);
+            -webkit-backdrop-filter: blur(9px)
+        }
+
+        .modal.open {
+            opacity: 1;
+            pointer-events: auto
+        }
+
+        .modal-card {
+            position: relative;
+            width: min(640px, 100%);
+            max-height: 85vh;
+            overflow: auto;
+            background: var(--card);
+            border-radius: 30px;
+            padding: 36px;
+            border: 1px solid rgba(255, 255, 255, .6);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(30px) scale(.965);
+            transition: transform .45s var(--ease);
+        }
+
+        .modal.open .modal-card {
+            transform: none
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--bg-soft);
+            display: grid;
+            place-items: center;
+            transition: background .25s, transform .3s var(--ease);
+        }
+
+        .modal-close:hover {
+            background: var(--peach);
+            transform: rotate(90deg)
+        }
+
+        .modal-close svg {
+            width: 17px;
+            height: 17px
+        }
+
+        .modal-card h2 {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 680;
+            font-size: 28px;
+            letter-spacing: -.02em;
+            margin: 12px 44px 16px 0;
+            line-height: 1.15
+        }
+
+        .modal-body p {
+            color: var(--ink-soft);
+            margin: 12px 0
+        }
+
+        .modal-body ul,
+        .modal-body ol {
+            padding-left: 22px;
+            color: var(--ink-soft);
+            display: grid;
+            gap: 9px;
+            margin: 14px 0
+        }
+
+        .modal-body li::marker {
+            color: var(--coral);
+            font-weight: 800
+        }
+
+        .modal-body strong {
+            color: var(--ink)
+        }
+
+        .modal .callout {
+            margin-top: 20px
+        }
+
+        .callout {
+            padding: 14px 17px;
+            border-radius: 16px;
+            background: #fff;
+            border: 1px dashed rgba(232, 69, 39, .4);
+            font-weight: 650;
+            font-size: 14px;
+            color: var(--ink);
+            display: flex;
+            gap: 11px;
+            align-items: flex-start;
+        }
+
+        .callout svg {
+            width: 18px;
+            height: 18px;
+            flex: none;
+            color: var(--coral);
+            margin-top: 2px
+        }
+
+        .modal .btn-primary {
+            margin-top: 22px
+        }
+
+        /* reveal on scroll */
+        html.js .reveal {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity .9s var(--ease) var(--d, 0s), transform .9s var(--ease) var(--d, 0s)
+        }
+
+        html.js .reveal.in {
+            opacity: 1;
+            transform: none
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            html.js *,
+            html.js *::before,
+            html.js *::after {
+                animation: none !important;
+                transition: none !important;
+                opacity: 1 !important;
+                transform: none !important
+            }
+
+            html {
+                scroll-behavior: auto
+            }
+        }
+
+        /* responsive */
+        @media(max-width:1020px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 44px;
+                padding-top: 52px
+            }
+
+            .hero-art {
+                max-width: 460px;
+                margin: 0 auto;
+                width: 100%
+            }
+        }
+
+        @media(max-width:760px) {
+            .wrap {
+                padding: 0 20px
+            }
+
+            .navlinks,
+            .nav-cta .btn {
+                display: none
+            }
+
+            .burger {
+                display: grid
+            }
+
+            .section {
+                padding: 52px 0 12px
+            }
+
+            .section-head {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+                margin-bottom: 24px
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .lesson {
+                min-height: 0
+            }
+
+            .hero {
+                padding: 44px 0 16px
+            }
+
+            .hero h1 {
+                font-size: clamp(38px, 11.5vw, 50px)
+            }
+
+            .hero p.lead {
+                font-size: 16px
+            }
+
+            .st-1 {
+                left: 0
+            }
+
+            .st-2 {
+                right: 4px
+            }
+
+            .quizbox {
+                padding: 24px 20px
+            }
+
+            .quizfoot {
+                flex-direction: column;
+                align-items: stretch
+            }
+
+            .quizfoot .btn {
+                width: 100%;
+                justify-content: center
+            }
+
+            .actions .btn {
+                flex: 1 1 100%;
+                justify-content: center
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="app">
+
+        <!-- ======= TOPBAR ======= -->
+        <header class="topbar">
+            <div class="wrap nav">
+                <a class="brand" href="#home" data-testid="brand-link" aria-label="AI Sense home">
+                    <span class="logo">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2.5l2.2 7.3 7.3 2.2-7.3 2.2L12 21.5l-2.2-7.3L2.5 12l7.3-2.2L12 2.5z"
+                                fill="#FFF8F0" />
+                        </svg>
+                    </span>
+                    AI Sense
+                </a>
+                <nav class="navlinks" aria-label="Primary">
+                    <a href="#quiz" data-testid="nav-quiz">Quiz</a>
+                    <a href="#learn" data-testid="nav-lessons">Lessons</a>
+                </nav>
+                <div class="nav-cta">
+                    <button class="btn btn-primary small" data-scroll="#quiz" data-testid="nav-start-learning">
+                        Start learning
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </button>
+                    <button class="burger" id="menuBtn" data-testid="mobile-menu-button" aria-label="Open menu"
+                        aria-expanded="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round">
+                            <path d="M4 7h16M4 12h16M4 17h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="mobilemenu" id="mobileMenu" data-testid="mobile-menu">
+            <a href="#quiz" data-testid="mobile-nav-quiz">Quiz</a>
+            <a href="#learn" data-testid="mobile-nav-lessons">Lessons</a>
+            <button class="btn btn-primary" data-scroll="#quiz" data-testid="mobile-start-learning">Start
+                learning</button>
+        </div>
+
+        <main>
+            <!-- ======= HERO ======= -->
+            <section class="wrap hero" id="home">
+                <div>
+                    <span class="eyebrow fadeup d1"><span class="dot"></span> Digital safety, made simple</span>
+                    <h1>
+                        <span class="line l1"><span>Use AI with <em>confidence.</em></span></span>
+                        <span class="line l2"><span>Protect what matters.</span></span>
+                    </h1>
+                    <p class="lead fadeup d2">A friendly, practical hub to help you understand privacy, data leaks, and
+                        safer AI habits.</p>
+                    <div class="actions fadeup d3">
+                        <button class="btn btn-primary" data-scroll="#quiz" data-testid="hero-take-quiz">
+                            Take the quick quiz
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                        </button>
+                        <button class="btn btn-ghost" id="startSession" data-testid="hero-ten-min-guide">Run the
+                            10-minute session</button>
+                    </div>
+                    <p class="note fadeup d3">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        Free to explore · No sign-up · Learn at your own pace
+                    </p>
+                </div>
+
+                <div class="hero-art">
+                    <span class="sticker st-sun st-1">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="10" width="16" height="10" rx="3" />
+                            <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                        </svg>
+                        Privacy
+                    </span>
+                    <span class="sticker st-sage st-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        Deepfakes
+                    </span>
+                    <div class="art-card">
+                        <div class="art-top"><span>YOUR AI SAFETY CHECKLIST</span><span>01 / 04</span></div>
+                        <div class="shieldbox">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-3.6 8-10V5.5L12 2 4 5.5V12c0 6.4 8 10 8 10z" />
+                                <path d="M9 11.6l2.1 2.1L15.3 9.5" />
+                            </svg>
+                        </div>
+                        <div class="art-bottom">
+                            <strong>Pause. Check. Then share.</strong>
+                            <small>Small habits can prevent big mistakes.</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======= QUIZ ======= -->
+            <section class="section" id="quiz">
+                <div class="wrap">
+                    <div class="section-head reveal">
+                        <div>
+                            <span class="eyebrow"><span class="dot"></span> Check what you know</span>
+                            <h2>The 3-question safety check</h2>
+                        </div>
+                        <div class="muted">Instant feedback · No score saved</div>
+                    </div>
+                    <div class="quizbox reveal" style="--d:.08s">
+                        <div class="qtop">
+                            <strong id="qcount" data-testid="quiz-count">Question 1 of 3</strong>
+                            <span class="scorechip" id="scorelabel" data-testid="quiz-score">Score: 0</span>
+                        </div>
+                        <div class="progress"><span id="progress"></span></div>
+                        <h3 id="question" data-testid="quiz-question">An AI tool asks you to paste an API key to debug
+                            an error. What should you do?</h3>
+                        <div class="answers" id="answers" data-testid="quiz-answers"></div>
+                        <div class="feedback" id="feedback" aria-live="polite" data-testid="quiz-feedback"></div>
+                        <div class="quizfoot">
+                            <button class="btn btn-ghost small" id="restart" onclick="restartQuiz()"
+                                style="display:none" data-testid="quiz-restart">Try again</button>
+                            <button class="btn btn-primary small" id="next" onclick="nextQuestion()" disabled
+                                data-testid="quiz-next">Choose an answer</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======= LESSONS ======= -->
+            <section class="section" id="learn">
+                <div class="wrap">
+                    <div class="section-head reveal">
+                        <div>
+                            <span class="eyebrow"><span class="dot"></span> Start with the basics</span>
+                            <h2>Two short lessons.</h2>
+                        </div>
+                        <div class="muted">Simple, useful, and beginner-friendly.</div>
+                    </div>
+
+                    <div class="grid">
+                        <article class="lesson reveal" style="--d:.05s">
+                            <div class="lesson-top">
+                                <span class="iconbox ib-coral"><svg viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect x="4" y="10" width="16" height="10" rx="3" />
+                                        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                                    </svg></span>
+                            </div>
+                            <div class="num">LESSON 01</div>
+                            <h3>Protect your data</h3>
+                            <p>Learn what not to paste into an AI chat.</p>
+                            <button class="btn btn-ghost small" data-lesson="0" data-testid="lesson-open-0">Read lesson
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </button>
+                        </article>
+
+                        <article class="lesson reveal" style="--d:.14s">
+                            <div class="lesson-top">
+                                <span class="iconbox ib-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
+                                        <path d="M12 9v4M12 17h.01" />
+                                    </svg></span>
+                            </div>
+                            <div class="num">LESSON 02</div>
+                            <h3>Understand data leaks</h3>
+                            <p>Learn what to do if private information gets exposed.</p>
+                            <button class="btn btn-ghost small" data-lesson="1" data-testid="lesson-open-1">Read lesson
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </button>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="wrap">
+                <div class="flogo">
+                    <span class="logo"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2.5l2.2 7.3 7.3 2.2-7.3 2.2L12 21.5l-2.2-7.3L2.5 12l7.3-2.2L12 2.5z"
+                                fill="#FFF8F0" />
+                        </svg></span>
+                    AI Sense
+                </div>
+                <p>A simple community learning project about safer, more responsible AI use.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ======= MODAL ======= -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+        data-testid="lesson-modal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalClose" aria-label="Close lesson" data-testid="modal-close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+            </button>
+            <span class="eyebrow" id="modalEyebrow"><span class="dot"></span> LESSON</span>
+            <h2 id="modalTitle"></h2>
+            <div class="modal-body" id="modalBody"></div>
+            <button class="btn btn-primary" id="modalGot" data-testid="modal-got-it">Got it</button>
+        </div>
+    </div>
+
+    <script>
+            (function () {
+                'use strict';
+                function $(s) { return document.querySelector(s) }
+                function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)) }
+
+                /* ---------------- Lessons (pop-up modals) ---------------- */
+                var lessons = [
+                    { tag: 'LESSON 01', title: 'Privacy & sensitive data', body: `<p>Before sending information to an AI tool, ask: <strong>Would it be safe if this information reached the wrong person?</strong></p><ul><li>Never paste passwords, private keys, session tokens, or recovery codes.</li><li>Remove names, phone numbers, addresses, customer records, and other personal information when it is not needed.</li><li>Use only tools approved for your organisation's data.</li><li>Check the tool's privacy settings and data-handling terms.</li></ul><div class="callout">Safer example: replace a real customer record with fictional sample data before asking for help.</div>` },
+                    { tag: 'LESSON 02', title: 'Leaks & security mistakes', body: `<p>A data leak happens when private or sensitive information is exposed to people or systems that should not have access to it. AI use can increase risk if people share information without checking where it goes.</p><ul><li>Check code and documents for secrets before uploading them.</li><li>Do not assume a chat is private just because it feels like a conversation.</li><li>If a credential is exposed, notify the responsible team and rotate or revoke it according to policy.</li><li>Do not repost leaked information; report it through the proper channel.</li></ul><div class="callout">Remember: deleting a message may not undo an exposure. Follow your incident-response process.</div>` }
+                ];
+
+                var modal = $('#modal'), mEyebrow = $('#modalEyebrow'), mTitle = $('#modalTitle'), mBody = $('#modalBody');
+                function openModal(tag, title, body) {
+                    mEyebrow.innerHTML = '<span class="dot"></span> ' + tag;
+                    mTitle.textContent = title;
+                    mBody.innerHTML = body;
+                    modal.classList.add('open');
+                    document.body.classList.add('locked');
+                    $('#modalGot').focus();
+                }
+                function closeModal() {
+                    modal.classList.remove('open');
+                    document.body.classList.remove('locked');
+                }
+                $$('[data-lesson]').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var l = lessons[parseInt(btn.getAttribute('data-lesson'), 10)];
+                        openModal(l.tag, l.title, l.body);
+                    });
+                });
+                $('#modalClose').addEventListener('click', closeModal);
+                $('#modalGot').addEventListener('click', closeModal);
+                modal.addEventListener('click', function (e) { if (e.target === modal) closeModal() });
+                document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal() });
+
+                /* ---------------- 10-minute guide ---------------- */
+                var guideBody = '<ol><li><strong>Minutes 0–2:</strong> Ask: “What information should never go into an AI chat?”</li><li><strong>Minutes 2–5:</strong> Explain private data and data leaks. Never paste passwords, API keys, or personal records into unapproved tools.</li><li><strong>Minutes 5–8:</strong> Discuss one “Safe or risky?” example: sharing a small code example with secrets removed is safer than sharing real API keys and private logs.</li><li><strong>Minutes 8–10:</strong> Take the mini quiz above and ask everyone to name one safety habit.</li></ol><div class="callout">Keep examples fictional. The goal is to build safe habits, not to scare people away from AI.</div>';
+                $('#startSession').addEventListener('click', function () {
+                    openModal('10-MINUTE GUIDE', 'Run your 10-minute session', guideBody);
+                });
+
+                /* ---------------- Quiz ---------------- */
+                var qs = [
+                    { q: 'An AI tool asks you to paste an API key to debug an error. What should you do?', a: ['Paste it, then delete the chat', 'Share a revoked or fake example and remove secrets', 'Post it in a public forum instead'], correct: 1, why: 'Correct. Use a placeholder or safe test credential, and never share live secrets.' },
+                    { q: 'A realistic voice message from your boss asks for an urgent payment. What is safest?', a: ['Pay immediately because the voice sounds real', 'Forward it to everyone', 'Verify using a known, independent channel'], correct: 2, why: 'Correct. Voice can be cloned. Confirm unusual requests through a trusted channel.' },
+                    { q: 'AI generates code that appears to work. What next?', a: ['Review and test it in a safe environment', 'Deploy it directly to production', 'Assume it is secure because AI wrote it'], correct: 0, why: 'Correct. Review, test, and check security before relying on AI-generated code.' }
+                ];
+                var qi = 0, score = 0, chosen = false;
+                function renderQ() {
+                    var q = qs[qi];
+                    $('#qcount').textContent = 'Question ' + (qi + 1) + ' of ' + qs.length;
+                    $('#scorelabel').textContent = 'Score: ' + score;
+                    $('#question').textContent = q.q;
+                    $('#progress').style.width = (qi / qs.length * 100) + '%';
+                    $('#feedback').textContent = '';
+                    $('#feedback').classList.remove('bad');
+                    $('#next').disabled = true;
+                    $('#next').textContent = 'Choose an answer';
+                    $('#restart').style.display = 'none';
+                    chosen = false;
+                    var box = $('#answers');
+                    box.innerHTML = '';
+                    q.a.forEach(function (ans, i) {
+                        var b = document.createElement('button');
+                        b.className = 'answer';
+                        b.setAttribute('data-testid', 'quiz-answer-' + i);
+                        b.innerHTML = '<span class="key">' + String.fromCharCode(65 + i) + '</span><span>' + ans + '</span>';
+                        b.addEventListener('click', function () { pick(i, b) });
+                        box.appendChild(b);
+                    });
+                }
+                function pick(i, btn) {
+                    if (chosen) return;
+                    chosen = true;
+                    var q = qs[qi];
+                    $$('#answers .answer').forEach(function (x) { x.disabled = true });
+                    if (i === q.correct) {
+                        score++;
+                        btn.classList.add('correct');
+                        btn.querySelector('.key').innerHTML = '&#10003;';
+                        $('#feedback').textContent = q.why;
+                    } else {
+                        btn.classList.add('wrong');
+                        $$('#answers .answer')[q.correct].classList.add('correct');
+                        $('#feedback').textContent = 'Not quite. ' + q.why;
+                        $('#feedback').classList.add('bad');
+                    }
+                    $('#scorelabel').textContent = 'Score: ' + score;
+                    $('#next').disabled = false;
+                    $('#next').textContent = qi === qs.length - 1 ? 'See results' : 'Next question';
+                    $('#progress').style.width = ((qi + 1) / qs.length * 100) + '%';
+                }
+                function nextQuestion() {
+                    if (!chosen) return;
+                    if (qi < qs.length - 1) {
+                        qi++;
+                        renderQ();
+                    } else {
+                        $('#qcount').textContent = 'Quiz complete';
+                        $('#question').textContent = '';
+                        $('#question').innerHTML = '<span class="result-big">You scored ' + score + ' out of ' + qs.length + '</span>';
+                        $('#answers').innerHTML = '<p class="muted">Keep practising these habits: minimise what you share, verify before acting, and report mistakes quickly.</p>';
+                        $('#feedback').textContent = score === 3 ? 'Excellent—you know the basics of safer AI use.' : 'Good start. Review the lessons below and try again.';
+                        $('#feedback').classList.toggle('bad', score !== 3);
+                        $('#next').disabled = true;
+                        $('#next').textContent = 'Completed';
+                        $('#restart').style.display = 'inline-flex';
+                        $('#progress').style.width = '100%';
+                    }
+                }
+                function restartQuiz() { qi = 0; score = 0; renderQ() }
+                window.nextQuestion = nextQuestion;
+                window.restartQuiz = restartQuiz;
+                renderQ();
+
+                /* ---------------- Mobile menu ---------------- */
+                var menuBtn = $('#menuBtn'), mobileMenu = $('#mobileMenu');
+                function closeMenu() { mobileMenu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false') }
+                menuBtn.addEventListener('click', function () {
+                    var open = mobileMenu.classList.toggle('open');
+                    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+                $$('#mobileMenu a').forEach(function (a) { a.addEventListener('click', closeMenu) });
+
+                /* ---------------- Smooth anchors ---------------- */
+                function scrollToTarget(sel) {
+                    var el = $(sel);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+                $$('a[href^="#"]').forEach(function (a) {
+                    a.addEventListener('click', function (e) {
+                        var href = a.getAttribute('href');
+                        if (href.length > 1 && $(href)) { e.preventDefault(); closeMenu(); scrollToTarget(href) }
+                    });
+                });
+                $$('[data-scroll]').forEach(function (b) {
+                    b.addEventListener('click', function () { closeMenu(); scrollToTarget(b.getAttribute('data-scroll')) });
+                });
+
+                /* ---------------- Scroll reveals ---------------- */
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (en) {
+                        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target) }
+                    });
+                }, { threshold: .15, rootMargin: '0px 0px -30px 0px' });
+                $$('.reveal').forEach(function (el) { io.observe(el) });
+
+                /* ---------------- Active nav link ---------------- */
+                var navIO = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (en) {
+                        if (en.isIntersecting) {
+                            $$('.navlinks a').forEach(function (a) {
+                                a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id);
+                            });
+                        }
+                    });
+                }, { rootMargin: '-40% 0px -55% 0px' });
+                ['quiz', 'learn'].forEach(function (id) { var el = document.getElementById(id); if (el) navIO.observe(el) });
+            })();
+    </script>
+
+</body>
+
+</html>
